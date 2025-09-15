@@ -43,7 +43,7 @@ You need to have the following software installed on your machine:
 
 1.  **Clone the repository:**
     ```sh
-    git clone [https://github.com/subha0319/Project-Manager](https://github.com/subha0319/Project-Manager)
+    git clone https://github.com/subha0319/Project-Manager
     cd your-repo-name
     ```
 
