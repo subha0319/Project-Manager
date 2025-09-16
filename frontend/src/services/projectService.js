@@ -23,3 +23,9 @@ export const addMemberToProject = async (projectId, email) => {
   const response = await api.post(`/projects/${projectId}/members`, { email });
   return response.data;
 };
+
+// Function to delete a project
+export const deleteProject = async (projectId) => {
+  const response = await api.delete(`/projects/${projectId}`);
+  return response.data;
+};

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import * as projectService from '../services/projectService';
 import * as taskService from '../services/taskService';
@@ -9,6 +9,7 @@ import socket from '../services/socketService';
 
 const ProjectPage = () => {
   const { projectId } = useParams();
+  const navigate = useNavigate(); // Get the navigate function
   const { user } = useAuth();
   const [project, setProject] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -24,6 +25,21 @@ const ProjectPage = () => {
       setTasks(tasksData);
     } catch (error) {
       console.error("Failed to fetch project data", error);
+    }
+  };
+
+  // --- Function to Delete project ---
+  const handleDeleteProject = async () => {
+    // A confirmation step is crucial for destructive actions
+    if (window.confirm('Are you sure you want to delete this project and all its tasks? This action cannot be undone.')) {
+      try {
+        await projectService.deleteProject(projectId);
+        alert('Project deleted successfully.');
+        navigate('/dashboard'); // Redirect to dashboard after deletion
+      } catch (error) {
+        console.error('Failed to delete project:', error);
+        alert('Failed to delete project.');
+      }
     }
   };
 
@@ -89,6 +105,17 @@ const ProjectPage = () => {
             <div>
                 <h1 className="text-4xl font-bold">{project.title}</h1>
                 <p className="text-gray-400 mt-1">{project.description}</p>
+            </div>
+            <div className="flex gap-2">
+                {/* --- ADD THIS BUTTON (conditionally rendered) --- */}
+                {project.isOwner && (
+                    <button onClick={handleDeleteProject} className="px-4 py-2 font-semibold bg-red-600 rounded-md hover:bg-red-700">
+                        Delete Project
+                    </button>
+                )}
+                <button onClick={openAddModal} className="px-4 py-2 font-semibold bg-blue-600 rounded-md hover:bg-blue-700">
+                    + Add Task
+                </button>
             </div>
             <button onClick={openAddModal} className="px-4 py-2 font-semibold bg-blue-600 rounded-md hover:bg-blue-700">+ Add Task</button>
         </div>
