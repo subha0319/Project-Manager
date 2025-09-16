@@ -33,7 +33,7 @@ const LoginPage = () => {
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.g.et.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
