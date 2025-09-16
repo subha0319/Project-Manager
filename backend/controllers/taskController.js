@@ -11,14 +11,14 @@ const createTask = async (req, res) => {
   }
 
   try {
-    // 1. Find the project this task belongs to
+    // Find the project this task belongs to
     const project = await Project.findById(projectId);
     if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
 
-    // 2. --- Permission Check ---
-    //    Check if the user is a member or owner of the project
+    // --- Permission Check ---
+    // Check if the user is a member or owner of the project
     const isMember = project.members.some(memberId => memberId.equals(req.user._id));
     const isOwner = project.owner.equals(req.user._id);
 
@@ -26,7 +26,7 @@ const createTask = async (req, res) => {
       return res.status(403).json({ message: 'User not authorized to add tasks to this project' });
     }
     
-    // 3. Create and save the new task
+    // Create and save the new task
     const task = await Task.create({
       title,
       description,

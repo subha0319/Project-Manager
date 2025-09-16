@@ -14,6 +14,8 @@ router.route('/').post(protect, createProject).get(protect, getProjects);
 
 router.route('/:id').get(protect, getProjectById);
 
+router.route('/:id/members').post(protect, addProjectMember);
+
 router
   .route('/:id')
   .put(protect, updateProject)
