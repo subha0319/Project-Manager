@@ -3,7 +3,7 @@ import axios from 'axios';
 // Create a new Axios instance with a custom configuration
 const api = axios.create({
   // Set the base URL for all API requests
-  baseURL: 'http://localhost:5001/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5001/api',
 });
 
 /*
