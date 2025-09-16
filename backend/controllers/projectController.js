@@ -149,6 +149,7 @@ const addProjectMember = async (req, res) => {
     res.json(updatedProject);
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
