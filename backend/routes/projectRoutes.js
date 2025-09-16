@@ -6,6 +6,7 @@ const {
   getProjectById,
   updateProject,
   deleteProject,
+  addProjectMember,
 } = require('../controllers/projectController');
 const { protect } = require('../middleware/authMiddleware');
 
