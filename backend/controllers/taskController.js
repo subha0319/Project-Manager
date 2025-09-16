@@ -71,13 +71,13 @@ const getTasksForProject = async (req, res) => {
 // @route   PUT /api/tasks/:id
 const updateTask = async (req, res) => {
   try {
+    // Find the original task to perform permission checks
     let task = await Task.findById(req.params.id);
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
     
     // --- Permission Check ---
-    // (A simplified check: only the assignee or project owner can update)
     const project = await Project.findById(task.project);
     const isOwner = project.owner.equals(req.user._id);
     const isAssignee = task.assignee && task.assignee.equals(req.user._id);
@@ -86,19 +86,20 @@ const updateTask = async (req, res) => {
         return res.status(403).json({ message: 'User not authorized to update this task' });
     }
 
+    // Update the task in the database ONCE and get the new version.
     const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
-    // Update fields
-    task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(task);
+    // Emit the real-time event BEFORE sending the response.
+    if (req.io) {
+        req.io.to(updatedTask.project.toString()).emit('taskUpdated', updatedTask);
+    }
 
-    // --- Emit the real-time event ---
-    // The `req.io` object comes from the middleware we created in index.js
-    req.io.to(updatedTask.project.toString()).emit('taskUpdated', updatedTask);
-
+    // Send the final, single response back to the original caller.
     res.json(updatedTask);
 
   } catch (error) {
+    // Log the actual error on the server for better debugging
+    console.error(error); 
     res.status(500).json({ message: 'Server Error' });
   }
 };
