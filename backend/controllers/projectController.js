@@ -1,4 +1,5 @@
 const Project = require('../models/Project');
+const User = require('../models/User');
 
 // @desc    Create a new project
 // @route   POST /api/projects
