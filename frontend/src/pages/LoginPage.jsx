@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
-import { login } from '../services/authService'; // Import our login function
+import { useNavigate } from 'react-router-dom'; // 1. Import useNavigate
+import { useAuth } from '../context/AuthContext';    // 2. Import useAuth
 
 const LoginPage = () => {
-  // State to hold the email and password from the form
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // Function to handle form submission
+  const { login } = useAuth(); // 3. Get the login function from our context
+  const navigate = useNavigate();  // 4. Get the navigate function
+
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent the form from refreshing the page
-    setError(''); // Clear previous errors
+    e.preventDefault();
+    setError('');
 
     try {
-      const user = await login({ email, password });
-      console.log('Login successful!', user);
-      // Here you would typically redirect the user to the dashboard
-      // For now, let's just log to the console and clear the form
-      alert('Login successful!');
-      setEmail('');
-      setPassword('');
+      await login({ email, password });
+      // 5. Redirect to the dashboard on success
+      navigate('/dashboard'); 
     } catch (err) {
       console.error('Failed to login:', err);
       setError('Invalid email or password. Please try again.');
