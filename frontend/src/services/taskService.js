@@ -23,3 +23,9 @@ export const getMyTasks = async () => {
   const response = await api.get('/tasks/mytasks');
   return response.data;
 };
+
+// Function to delete a task
+export const deleteTask = async (taskId) => {
+  const response = await api.delete(`/tasks/${taskId}`);
+  return response.data;
+};
