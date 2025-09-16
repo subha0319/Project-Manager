@@ -19,12 +19,15 @@ connectDB();
 const app = express();
 const server = http.createServer(app); // Create http server
 
+// Define CORS Options
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "http://localhost:5173", // Allow deployed site or local dev
+  methods: ["GET", "POST", "PUT", "DELETE"],
+};
+
 // Initialize socket.io with CORS configuration
 const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173", // Your React app's URL
-    methods: ["GET", "POST"]
-  }
+  cors: corsOptions
 });
 
 // Define the port from environment variables, with a fallback to 5001
@@ -32,7 +35,7 @@ const PORT = process.env.PORT || 5001;
 
 // --- Middlewares ---
 // Enable CORS for all routes
-app.use(cors());
+app.use(cors(corsOptions));
 // Allow the app to parse JSON from request bodies
 app.use(express.json());
 
