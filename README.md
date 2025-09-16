@@ -2,7 +2,7 @@
 
 A full-stack MERN application that allows teams to manage projects, tasks, and collaborations in real-time. This tool is designed to be secure, performant, and user-friendly, featuring user authentication, role-based access, and live updates using Socket.io.
 
-**Live Demo:** [Link to your deployed application on Vercel/Render]
+**Live Demo:** [Project Manager](https://project-manager-six-wine.vercel.app/)
 
 ---
 
