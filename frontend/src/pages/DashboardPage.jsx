@@ -21,6 +21,10 @@ const DashboardPage = () => {
           projectService.getProjects(),
           taskService.getMyTasks(),
         ]);
+
+        // --- FOR DEBUGGING ---
+        console.log('Fetched Projects from API:', userProjects);
+
         setProjects(userProjects);
         setTasks(userTasks);
       } catch (error) {
