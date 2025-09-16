@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'; // 1. Import useMemo
+import React, { useState, useEffect, useMemo } from 'react'; // Import useMemo
 import { useParams, Link } from 'react-router-dom';
 // ... other imports
 
@@ -9,14 +9,14 @@ const ProjectPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState(null);
   
-  // --- 2. Add state for search and filter ---
+  // --- Add state for search and filter ---
   const [searchTerm, setSearchTerm] = useState('');
   const [filterAssignee, setFilterAssignee] = useState('all'); // 'all' or a user ID
 
   const fetchProjectData = async () => { /* ... existing function, no changes needed ... */ };
   useEffect(() => { fetchProjectData(); }, [projectId]);
 
-  // --- 3. Use useMemo to calculate filtered tasks efficiently ---
+  // --- Use useMemo to calculate filtered tasks efficiently ---
   const filteredTasks = useMemo(() => {
     return tasks
       .filter(task => {
@@ -36,7 +36,7 @@ const ProjectPage = () => {
 
   if (!project) return <div>Loading...</div>;
 
-  // 4. Update column filters to use the `filteredTasks` list
+  // Update column filters to use the `filteredTasks` list
   const todoTasks = filteredTasks.filter(t => t.status === 'ToDo');
   const inProgressTasks = filteredTasks.filter(t => t.status === 'InProgress');
   const doneTasks = filteredTasks.filter(t => t.status === 'Done');
@@ -47,7 +47,7 @@ const ProjectPage = () => {
       <h1>{project.title}</h1>
       <p>{project.description}</p>
       
-      {/* --- 5. Add UI elements for search and filter --- */}
+      {/* --- Add UI elements for search and filter --- */}
       <div style={{ display: 'flex', gap: '20px', margin: '20px 0' }}>
         <input 
           type="text"

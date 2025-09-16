@@ -10,17 +10,17 @@ const protect = async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     try {
-      // 1. Get token from the header (e.g., "Bearer <token>")
+      // Get token from the header (e.g., "Bearer <token>")
       token = req.headers.authorization.split(' ')[1];
 
-      // 2. Verify the token using your JWT_SECRET
+      // Verify the token using your JWT_SECRET
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // 3. Get the user from the database using the id from the token
-      //    and attach it to the request object. We exclude the password.
+      // Get the user from the database using the id from the token
+      // and attach it to the request object. We exclude the password.
       req.user = await User.findById(decoded.id).select('-password');
 
-      // 4. Move on to the next function/middleware
+      // Move on to the next function/middleware
       next();
     } catch (error) {
       console.error(error);

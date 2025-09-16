@@ -85,27 +85,73 @@ const deleteProject = async (req, res) => {
   }
 };
 
-// This is a new, separate controller function
 // @desc    Get a single project by ID
 // @route   GET /api/projects/:id
 const getProjectById = async (req, res) => {
-    try {
-        // Find the project and populate owner and members with their name and email
-        const project = await Project.findById(req.params.id)
-            .populate('owner', 'name email')
-            .populate('members', 'name email'); // <-- Add this line
+  try {
+    // Find the project and populate owner and members with their name and email
+    const project = await Project.findById(req.params.id)
+      .populate('owner', 'name email')
+      .populate('members', 'name email');
 
-        if (!project) {
-            return res.status(404).json({ message: 'Project not found' });
-        }
-        
-        // You might add a permission check here too if needed
-        res.json(project);
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
     }
+
+    // Convert the Mongoose document to a plain JavaScript object
+    const projectObject = project.toObject();
+
+    // Check if the currently logged-in user is the owner of the project
+    const isOwner = project.owner._id.toString() === req.user._id.toString();
+
+    // Add the 'isOwner' flag to the object
+    projectObject.isOwner = isOwner;
+
+    // Send the modified object as the response
+    res.json(projectObject);
+
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 
+//Add a member to a project by email
+const addProjectMember = async (req, res) => {
+  const { email } = req.body;
+  const { id: projectId } = req.params;
+
+  try {
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    // Permission Check: Only the project owner can add members
+    if (project.owner.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Only the project owner can add members' });
+    }
+
+    const userToInvite = await User.findOne({ email });
+    if (!userToInvite) {
+      return res.status(404).json({ message: 'User with that email not found' });
+    }
+
+    // Check if user is already a member
+    if (project.members.includes(userToInvite._id) || project.owner.equals(userToInvite._id)) {
+        return res.status(400).json({ message: 'User is already in the project' });
+    }
+
+    project.members.push(userToInvite._id);
+    await project.save();
+
+    // Populate member details before sending back
+    const updatedProject = await Project.findById(projectId).populate('members', 'name email');
+    res.json(updatedProject);
+
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
 
 module.exports = {
   createProject,
@@ -113,4 +159,5 @@ module.exports = {
   updateProject,
   deleteProject,
   getProjectById,
+  addProjectMember,
 };
