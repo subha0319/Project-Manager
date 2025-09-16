@@ -28,21 +28,6 @@ const ProjectPage = () => {
     }
   };
 
-  // --- Function to Delete project ---
-  const handleDeleteProject = async () => {
-    // A confirmation step is crucial for destructive actions
-    if (window.confirm('Are you sure you want to delete this project and all its tasks? This action cannot be undone.')) {
-      try {
-        await projectService.deleteProject(projectId);
-        alert('Project deleted successfully.');
-        navigate('/dashboard'); // Redirect to dashboard after deletion
-      } catch (error) {
-        console.error('Failed to delete project:', error);
-        alert('Failed to delete project.');
-      }
-    }
-  };
-
   useEffect(() => {
     fetchProjectData();
 
@@ -87,6 +72,21 @@ const ProjectPage = () => {
     setIsModalOpen(true);
   };
 
+  // --- Function to Delete project ---
+  const handleDeleteProject = async () => {
+    // A confirmation step is crucial for destructive actions
+    if (window.confirm('Are you sure you want to delete this project and all its tasks? This action cannot be undone.')) {
+      try {
+        await projectService.deleteProject(projectId);
+        alert('Project deleted successfully.');
+        navigate('/dashboard'); // Redirect to dashboard after deletion
+      } catch (error) {
+        console.error('Failed to delete project:', error);
+        alert('Failed to delete project.');
+      }
+    }
+  };
+
   if (!project) return (
     <div className="flex items-center justify-center min-h-screen">
       <p>Loading project...</p>
@@ -97,7 +97,20 @@ const ProjectPage = () => {
   const inProgressTasks = tasks.filter(t => t.status === 'InProgress');
   const doneTasks = tasks.filter(t => t.status === 'Done');
 
-  return (
+  const handleDeleteTask = async (taskId) => {
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      try {
+        await taskService.deleteTask(taskId);
+        // Remove the task from the local state to instantly update the UI
+        setTasks(currentTasks => currentTasks.filter(task => task._id !== taskId));
+      } catch (error) {
+        console.error('Failed to delete task:', error);
+        alert('Failed to delete task.');
+      }
+    }
+  };
+
+return (
     <div className="container mx-auto p-4 md:p-8">
       <header className="mb-6">
         <Link to="/dashboard" className="text-blue-400 hover:underline">← Back to Dashboard</Link>
@@ -107,24 +120,24 @@ const ProjectPage = () => {
                 <p className="text-gray-400 mt-1">{project.description}</p>
             </div>
             <div className="flex gap-2">
-                {/* --- ADD THIS BUTTON (conditionally rendered) --- */}
+                {/* Conditionally rendered Delete Project button */}
                 {project.isOwner && (
                     <button onClick={handleDeleteProject} className="px-4 py-2 font-semibold bg-red-600 rounded-md hover:bg-red-700">
                         Delete Project
                     </button>
                 )}
+                {/* Single Add Task button */}
                 <button onClick={openAddModal} className="px-4 py-2 font-semibold bg-blue-600 rounded-md hover:bg-blue-700">
                     + Add Task
                 </button>
             </div>
-            <button onClick={openAddModal} className="px-4 py-2 font-semibold bg-blue-600 rounded-md hover:bg-blue-700">+ Add Task</button>
         </div>
       </header>
 
       <div className="flex flex-col md:flex-row gap-6">
-        <TaskColumn title="To Do" tasks={todoTasks} onEditTask={openEditModal} />
-        <TaskColumn title="In Progress" tasks={inProgressTasks} onEditTask={openEditModal} />
-        <TaskColumn title="Done" tasks={doneTasks} onEditTask={openEditModal} />
+        <TaskColumn title="To Do" tasks={todoTasks} onEditTask={openEditModal} onDeleteTask={handleDeleteTask} />
+        <TaskColumn title="In Progress" tasks={inProgressTasks} onEditTask={openEditModal} onDeleteTask={handleDeleteTask} />
+        <TaskColumn title="Done" tasks={doneTasks} onEditTask={openEditModal} onDeleteTask={handleDeleteTask} />
       </div>
 
       <div className="mt-8 p-6 bg-gray-800 rounded-lg">
