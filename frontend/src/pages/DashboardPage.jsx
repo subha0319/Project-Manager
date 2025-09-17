@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import * as projectService from '../services/projectService';
 import * as taskService from '../services/taskService';
@@ -9,15 +8,9 @@ import TaskStatusChart from '../components/TaskStatusChart';
 
 const DashboardPage = () => {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleLogout = () => {
-    logout(); // Call the context function to clear state
-    navigate('/'); // Manually navigate to the homepage
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +40,7 @@ const DashboardPage = () => {
     <div className="container mx-auto p-4 md:p-8">
       <header className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Welcome, {user.name}!</h1>
-        <button onClick={handleLogout} className="px-4 py-2 font-semibold bg-red-600 rounded-md hover:bg-red-700">
+        <button onClick={logout} className="px-4 py-2 font-semibold bg-red-600 rounded-md hover:bg-red-700">
           Logout
         </button>
       </header>
