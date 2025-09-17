@@ -28,9 +28,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    navigate('/');
     authService.logout();
     setUser(null);
-    navigate('/');
   };
 
   // 5. The value provided to consuming components
