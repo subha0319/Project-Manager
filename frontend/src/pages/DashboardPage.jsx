@@ -14,6 +14,11 @@ const DashboardPage = () => {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleLogout = () => {
+    logout(); // Call the context function to clear state
+    navigate('/'); // Manually navigate to the homepage
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,11 +42,6 @@ const DashboardPage = () => {
   }, []);
 
   const handleProjectCreated = (newProject) => { setProjects([...projects, newProject]); };
-
-  const handleLogout = () => {
-    logout(); // Call the context function to clear state
-    navigate('/'); // Manually navigate to the homepage
-  };
 
   return (
     <div className="container mx-auto p-4 md:p-8">
