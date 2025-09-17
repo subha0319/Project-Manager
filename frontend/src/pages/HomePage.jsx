@@ -24,29 +24,40 @@ const HomePage = () => {
         A full-stack, real-time collaborative tool built with the MERN stack and Socket.io.
       </p>
 
-      <div className="w-full max-w-md p-6 bg-gray-800 rounded-lg shadow-lg">
+      <div className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
         <h3 className="text-xl font-semibold mb-4">Guest Access</h3>
-        <p className="text-sm text-gray-400 mb-4">
-          Click a button to log in as a demo user. For the full experience, open two different users in separate browser windows to see live collaboration.
+        <p className="text-sm text-gray-400 mb-6">
+          Click a button for a one-click demo to explore the app.
         </p>
         <div className="space-y-3">
           <button 
             onClick={() => handleDemoLogin('user1@demo.com', 'password123')} 
-            className="w-full py-2 font-semibold text-white bg-green-600 rounded-md hover:bg-green-700"
+            className="w-full py-2 font-semibold text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors"
           >
             Login as Demo User 1
           </button>
           <button 
             onClick={() => handleDemoLogin('user2@demo.com', 'password123')} 
-            className="w-full py-2 font-semibold text-white bg-teal-600 rounded-md hover:bg-teal-700"
+            className="w-full py-2 font-semibold text-white bg-teal-600 rounded-md hover:bg-teal-700 transition-colors"
           >
             Login as Demo User 2
           </button>
         </div>
-        <div className="my-4 text-gray-500">OR</div>
-        <Link to="/register" className="font-medium text-blue-500 hover:underline">
-          Register Your Own Account
-        </Link>
+        
+        <div className="mt-6 pt-6 border-t border-gray-700 text-sm text-gray-400">
+          <p>
+            Already have an account?{' '}
+            <Link to="/login" className="font-medium text-blue-500 hover:underline">
+              Login here
+            </Link>
+          </p>
+          <p className="mt-2">
+            Or create a new one:{' '}
+            <Link to="/register" className="font-medium text-blue-500 hover:underline">
+              Register Your Own Account
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
