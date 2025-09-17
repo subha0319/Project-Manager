@@ -26,6 +26,9 @@ const LoginPage = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
       <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold text-center">Login to Your Account</h2>
+        <p className="text-center text-sm text-gray-400">
+          <em>Please allow up to 50 seconds for the server to wake up on the first login.</em>
+        </p>
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-400">Email:</label>
@@ -66,61 +69,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
-
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom'; // Import useNavigate
-// import { useAuth } from '../context/AuthContext';    // Import useAuth
-
-// const LoginPage = () => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [error, setError] = useState('');
-
-//   const { login } = useAuth(); // Get the login function from our context
-//   const navigate = useNavigate();  // Get the navigate function
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     setError('');
-
-//     try {
-//       await login({ email, password });
-//       // Redirect to the dashboard on success
-//       navigate('/dashboard'); 
-//     } catch (err) {
-//       console.error('Failed to login:', err);
-//       setError('Invalid email or password. Please try again.');
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h2>Login</h2>
-//       <form onSubmit={handleLogin}>
-//         <div>
-//           <label>Email:</label>
-//           <input
-//             type="email"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//             required
-//           />
-//         </div>
-//         <div>
-//           <label>Password:</label>
-//           <input
-//             type="password"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//             required
-//           />
-//         </div>
-//         <button type="submit">Login</button>
-//       </form>
-//       {error && <p style={{ color: 'red' }}>{error}</p>}
-//     </div>
-//   );
-// };
-
-// export default LoginPage;

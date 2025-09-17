@@ -3,8 +3,16 @@
 A full-stack MERN application that allows teams to manage projects, tasks, and collaborations in real-time. This tool is designed to be secure, performant, and user-friendly, featuring user authentication, role-based access, and live updates using Socket.io.
 
 **Live Demo:** [Project Manager](https://project-manager-six-wine.vercel.app/)
+**Performance Note:** The backend is deployed on a free-tier Render instance, which may "spin down" after a period of inactivity. **The first request (like logging in) may take 30-50 seconds to complete as the server restarts.** Subsequent requests will be much faster.
 
 ---
+
+### Demo Credentials
+
+To test the application and its collaborative features without registering, you can use the following pre-configured demo accounts. The easiest way is to use the one-click login buttons on the homepage.
+
+* **User 1:** `user1@demo.com` / `password123`
+* **User 2:** `user2@demo.com` / `password123`
 
 ## Features
 
