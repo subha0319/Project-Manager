@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import * as authService from '../services/authService'; // Use our auth service
 
 // 1. Create the context
@@ -13,8 +12,6 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem('userInfo');
     return storedUser ? JSON.parse(storedUser) : null;
   });
-
-  const navigate = useNavigate();
 
   // 4. Functions to modify the state
   const login = async (userData) => {
