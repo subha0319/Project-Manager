@@ -40,7 +40,14 @@ const DashboardPage = () => {
     <div className="container mx-auto p-4 md:p-8">
       <header className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Welcome, {user.name}!</h1>
-        <button onClick={logout} className="px-4 py-2 font-semibold bg-red-600 rounded-md hover:bg-red-700">
+        {/* <button onClick={logout} className="px-4 py-2 font-semibold bg-red-600 rounded-md hover:bg-red-700"> */}
+        <button 
+          onClick={() => {
+            console.log('Logout button clicked on DashboardPage.');
+            logout();
+          }} 
+          className="px-4 py-2 font-semibold bg-red-600 rounded-md hover:bg-red-700"
+        >
           Logout
         </button>
       </header>

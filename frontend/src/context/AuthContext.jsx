@@ -25,8 +25,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    authService.logout();
-    setUser(null);
+    // authService.logout();
+    // setUser(null);
+    console.log('AuthContext: logout function started.');
+    authService.logout(); // Removes user from localStorage
+    setUser(null);      // Sets the user state to null
+    console.log('AuthContext: User state has been set to null.');
   };
 
   // 5. The value provided to consuming components
