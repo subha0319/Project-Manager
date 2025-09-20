@@ -47,6 +47,25 @@ You need to have the following software installed on your machine:
 -   [npm](https://www.npmjs.com/) (usually comes with Node.js)
 -   [Git](https://git-scm.com/)
 
+## Project Structure
+
+The repository is organized into two main folders, `frontend` and `backend`.
+
+```
+/
+├── backend/
+│   ├── controllers/  # Contains the business logic for API routes
+│   ├── models/       # Mongoose schemas for the database
+│   ├── routes/       # Express route definitions
+│   └── middleware/   # Custom middleware (e.g., authentication)
+└── frontend/
+    ├── src/
+    │   ├── components/ # Reusable React components
+    │   ├── pages/      # Components representing full pages
+    │   ├── context/    # Global state management (AuthContext)
+    │   └── services/   # Centralized API and socket services
+```
+
 ### Local Setup
 
 1.  **Clone the repository:**
