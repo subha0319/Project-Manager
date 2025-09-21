@@ -17,6 +17,7 @@ const RegisterPage = () => {
       await register({ name, email, password });
       navigate('/dashboard');
     } catch (err) {
+      console.error("Register failed:", err); // Good for debugging
       setError('Failed to register. The email might already be in use.');
     }
   };
