@@ -46,7 +46,7 @@ const ProjectPage = () => {
     return () => {
       socket.off('taskUpdated', handleTaskUpdate);
     };
-  }, [projectId]);
+  }, [projectId], fetchProjectData);
 
   const handleInviteMember = async (e) => {
     e.preventDefault();
