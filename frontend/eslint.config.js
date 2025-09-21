@@ -24,6 +24,7 @@ export default defineConfig([
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'react-refresh/only-export-components': 'warn' // Since exporting a provider and a custom hook from the same context file is a very common and accepted pattern, we can mark this as a warning.
     },
   },
 ])
