@@ -114,11 +114,19 @@ JWT_SECRET=your_super_secret_jwt_string
 ### Backend
 
 -   `npm start`: Runs the server with `nodemon`, which automatically restarts on file changes.
+  ```sh
+    cd backend
+    npm start
+  ```
 -   `npm test`: Runs the Jest test suite.
 
 ### Frontend
 
 -   `npm run dev`: Starts the Vite development server for the React app.
+  ```sh
+    cd frontend
+    npm run dev
+  ```
 
 ---
 
