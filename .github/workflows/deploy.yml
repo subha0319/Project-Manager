@@ -32,7 +32,7 @@ jobs:
       run: npm test
       env:
         MONGO_URI: ${{ secrets.MONGO_URI }} # Use secrets for sensitive data
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        JWT_SECRET: ${{ github.event_name == 'pull_request' && secrets.JWT_SECRET_TEST || secrets.JWT_SECRET }}
 
     # Add your backend deployment step here, e.g., to Render or Heroku
 
