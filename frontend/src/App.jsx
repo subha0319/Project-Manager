@@ -17,8 +17,8 @@ function App() {
         <Route path="/" element={user ? <Navigate to="/dashboard" /> : <HomePage />} />
         <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <LoginPage />} />
         <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <RegisterPage />} />
-        <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/login" />} />
-        <Route path="/project/:projectId" element={user ? <ProjectPage /> : <Navigate to="/login" />} />
+        <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/" />} />
+        <Route path="/project/:projectId" element={user ? <ProjectPage /> : <Navigate to="/" />} />
       </Routes>
     </div>
   );
