@@ -6,7 +6,7 @@ import * as taskService from '../services/taskService';
 import TaskColumn from '../components/TaskColumn';
 import TaskModal from '../components/TaskModal';
 import socket from '../services/socketService';
-
+import EditProjectModal from '../components/EditProjectModal';
 const ProjectPage = () => {
   const { projectId } = useParams();
   const navigate = useNavigate(); // Get the navigate function
@@ -16,6 +16,10 @@ const ProjectPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [inviteEmail, setInviteEmail] = useState('');
+
+  // State for EditProjectModal
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
 
   const fetchProjectData = async () => {
     try {
@@ -34,19 +38,26 @@ const ProjectPage = () => {
     socket.emit('joinProject', projectId);
 
     const handleTaskUpdate = (updatedTask) => {
-      setTasks(currentTasks => 
-        currentTasks.map(task => 
+      setTasks(currentTasks =>
+        currentTasks.map(task =>
           task._id === updatedTask._id ? updatedTask : task
         )
       );
     };
-    
+
     socket.on('taskUpdated', handleTaskUpdate);
 
     return () => {
       socket.off('taskUpdated', handleTaskUpdate);
     };
   }, [projectId], fetchProjectData);
+
+
+  // edit handler
+  const handleProjectUpdated = (updated) => {
+    setProject(updated);
+  };
+
 
   const handleInviteMember = async (e) => {
     e.preventDefault();
@@ -110,27 +121,35 @@ const ProjectPage = () => {
     }
   };
 
-return (
+  return (
     <div className="container mx-auto p-4 md:p-8">
       <header className="mb-6">
         <Link to="/dashboard" className="text-blue-400 hover:underline">← Back to Dashboard</Link>
         <div className="flex justify-between items-center mt-2">
-            <div>
-                <h1 className="text-4xl font-bold">{project.title}</h1>
-                <p className="text-gray-400 mt-1">{project.description}</p>
-            </div>
-            <div className="flex gap-2">
-                {/* Conditionally rendered Delete Project button */}
-                {project.isOwner && (
-                    <button onClick={handleDeleteProject} className="px-4 py-2 font-semibold bg-red-600 rounded-md hover:bg-red-700">
-                        Delete Project
-                    </button>
-                )}
-                {/* Single Add Task button */}
-                <button onClick={openAddModal} className="px-4 py-2 font-semibold bg-blue-600 rounded-md hover:bg-blue-700">
-                    + Add Task
+          <div>
+            <h1 className="text-4xl font-bold">{project.title}</h1>
+            <p className="text-gray-400 mt-1">{project.description}</p>
+          </div>
+          <div className="flex gap-2">
+            {/* Conditionally rendered Delete Project button */}
+            {project.isOwner && (
+              <>
+                <button
+                  onClick={() => setIsEditModalOpen(true)}
+                  className="px-4 py-2 font-semibold bg-yellow-600 rounded-md hover:bg-yellow-700"
+                >
+                  Edit Project
                 </button>
-            </div>
+                <button onClick={handleDeleteProject} className="px-4 py-2 font-semibold bg-red-600 rounded-md hover:bg-red-700">
+                  Delete Project
+                </button>
+              </>
+            )}
+            {/* Single Add Task button */}
+            <button onClick={openAddModal} className="px-4 py-2 font-semibold bg-blue-600 rounded-md hover:bg-blue-700">
+              + Add Task
+            </button>
+          </div>
         </div>
       </header>
 
@@ -151,8 +170,8 @@ return (
 
         {user && project.owner && user._id === project.owner._id && (
           <form onSubmit={handleInviteMember} className="mt-4 flex gap-2">
-            <input 
-              type="email" 
+            <input
+              type="email"
               value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)}
               placeholder="Invite user by email"
@@ -164,13 +183,18 @@ return (
         )}
       </div>
 
-      <TaskModal 
+      <TaskModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onTaskSaved={fetchProjectData}
         projectId={projectId}
         taskToEdit={taskToEdit}
       />
+      <EditProjectModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        project={project}
+        onProjectUpdated={handleProjectUpdated}/>
     </div>
   );
 };
