@@ -23,7 +23,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18' # Use a version compatible with your project
+        node-version: '18' # version compatible with the project
 
     - name: Install dependencies
       run: npm install
@@ -31,10 +31,10 @@ jobs:
     - name: Run backend tests
       run: npm test
       env:
-        MONGO_URI: ${{ secrets.MONGO_URI }} # Use secrets for sensitive data
-        JWT_SECRET: ${{ github.event_name == 'pull_request' && secrets.JWT_SECRET_TEST || secrets.JWT_SECRET }}
+        MONGO_URI: ${{ secrets.MONGO_URI }} # Using secrets for sensitive data
+        JWT_SECRET: ${{ (github.event.pull_request.head.repo.fork == true) && 'a-safe-default-secret-for-testing' || secrets.JWT_SECRET }}
 
-    # Add your backend deployment step here, e.g., to Render or Heroku
+    # Backend deployment (Render) step
 
   #-------------------------
   # FRONTEND CI/CD
@@ -66,4 +66,4 @@ jobs:
         VITE_API_URL: ${{ secrets.VITE_API_URL }}
         VITE_SOCKET_URL: ${{ secrets.VITE_SOCKET_URL }}
 
-    # Add your frontend deployment step here, e.g., to Vercel or Netlify
+    # Frontend deployment (Vercel) step
