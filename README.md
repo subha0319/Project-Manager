@@ -21,7 +21,6 @@ To test the application and its collaborative features without registering, you 
 -   **Task Management**: Kanban-style board with ToDo, InProgress, and Done columns.
 -   **Real-Time Collaboration**: Task updates are broadcast to all project members instantly using Socket.io.
 -   **Dashboard Overview**: At-a-glance view of all projects and tasks with a chart for task statuses.
--   **Search & Filter**: Easily find tasks by title or filter them by assignee.
 -   **Protected Routes**: API is secured to ensure users can only access their own data.
 
 ---
