@@ -57,8 +57,17 @@ const updateProject = async (req, res) => {
     project.description = req.body.description || project.description;
     project.deadline = req.body.deadline || project.deadline;
 
-    const updatedProject = await project.save();
+    await project.save();
+
+    const populatedProject = await Project.findById(project._id)
+      .populate('owner', 'name email')
+      .populate('members', 'name email');
+
+    const updatedProject = populatedProject.toObject();
+    updatedProject.isOwner = true;
+
     res.json(updatedProject);
+    
   } catch (error) {
     res.status(500).json({ message: 'Server error while updating project' });
   }
